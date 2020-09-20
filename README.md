@@ -1,5 +1,6 @@
 # s7c.conf
 My own zsh theme based on several others external themes.
+
 Note: `.zshrc` file is an exact copy of mine that includes alias, env vars and other stuff for reference
 
 ## Screenshot
