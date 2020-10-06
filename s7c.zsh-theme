@@ -3,7 +3,7 @@ function git_prompt_info() {
   if [[ "$(__git_prompt_git config --get oh-my-zsh.hide-status 2>/dev/null)" != "1" ]]; then
     ref=$(__git_prompt_git symbolic-ref HEAD 2> /dev/null) || \
     ref=$(__git_prompt_git rev-parse --short HEAD 2> /dev/null) || return 0
-    print -P "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX"
+    echo "${(e)ZSH_THEME_GIT_PROMPT_PREFIX}${ref#refs/heads/}$(parse_git_dirty)${(e)ZSH_THEME_GIT_PROMPT_SUFFIX}"
   fi
 }
 
@@ -29,18 +29,13 @@ function parse_git_dirty() {
     STATUS=$(__git_prompt_git status ${FLAGS} 2> /dev/null | tail -n1)
   fi
   if [[ -n $STATUS ]]; then
-    print -P "$ZSH_THEME_GIT_PROMPT_DIRTY"
+    echo "${(e)ZSH_THEME_GIT_PROMPT_DIRTY}"
   else
-    print -P "$ZSH_THEME_GIT_PROMPT_CLEAN"
+    echo "${(e)ZSH_THEME_GIT_PROMPT_CLEAN}"
   fi
 }
 
 PROMPT='%{$fg[red]%}%n%{$reset_color%}@%{$fg[red]%}%m%{$reset_color%} %{$fg[green]%}%~%{$reset_color%}$(git_prompt_info) %(!.#.$) '
-
-ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg_bold[blue]%}("
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY='[$(git_prompt_short_sha)]%{$fg[red]%} ✗%{$fg[blue]%})%{$reset_color%}'
-ZSH_THEME_GIT_PROMPT_CLEAN='[$(git_prompt_short_sha)]%{$fg[blue]%} ✔%{$fg_bold[blue]%})'
 
 #ZSH_THEME_GIT_PROMPT_ADDED="%{$fg[green]%}+%{$reset_color%}"
 #ZSH_THEME_GIT_PROMPT_DELETED="%{$fg[red]%}-%{$reset_color%}"
@@ -48,6 +43,11 @@ ZSH_THEME_GIT_PROMPT_CLEAN='[$(git_prompt_short_sha)]%{$fg[blue]%} ✔%{$fg_bold
 #ZSH_THEME_GIT_PROMPT_RENAMED="%{$fg[blue]%}>%{$reset_color%}"
 #ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[cyan]%}=%{$reset_color%}"
 #ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[yellow]%}?%{$reset_color%}"
+
+ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg_bold[blue]%}("
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[blue]%}"'[$(git_prompt_short_sha)'"%{$fg_bold[blue]%}]%{$fg[red]%} ✗%{$fg[blue]%})%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[blue]%}"'[$(git_prompt_short_sha)'"%{$fg_bold[blue]%}]%{$fg[blue]%} ✔%{$fg_bold[blue]%})"
 
 ZSH_THEME_GIT_PROMPT_SHA_BEFORE="%{$fg_bold[blue]%}"
 ZSH_THEME_GIT_PROMPT_SHA_AFTER="%{$reset_color%}"
